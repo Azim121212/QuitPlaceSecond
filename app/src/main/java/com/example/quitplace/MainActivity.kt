@@ -6,16 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import com.example.quitplace.ui.navigation.MainApp
-import com.example.quitplace.ui.onboarding.OnboardingFlow
 
-// @AndroidEntryPoint  // ЗАКОММЕНТИРОВАНО - ВРЕМЕННО БЕЗ HILT
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,24 +18,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppEntryPoint()
+                    Text("Приложение запущено!")
                 }
             }
         }
-    }
-}
-
-@Composable
-fun AppEntryPoint() {
-    var showOnboarding by remember { mutableStateOf(true) }
-
-    if (showOnboarding) {
-        OnboardingFlow(
-            onComplete = {
-                showOnboarding = false
-            }
-        )
-    } else {
-        MainApp()
     }
 }

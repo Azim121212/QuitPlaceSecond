@@ -45,6 +45,18 @@ fun PostCard(
                 color = MaterialTheme.colorScheme.onBackground
             )
 
+
+
+            // Триггер-предупреждения (если есть)
+            if (post.triggerWarnings.isNotEmpty()) {
+                Text(
+                    text = "🚨 Триггеры: ${post.triggerWarnings.joinToString { it.emoji }}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Red.copy(alpha = 0.8f),
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
             // Триггер-предупреждение (если есть)
             // TODO: Потом добавим реальные триггеры из данных
 

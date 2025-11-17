@@ -2,6 +2,9 @@ package com.example.quitplace.di
 
 import com.example.quitplace.data.repository.PostRepositoryImpl
 import com.example.quitplace.domain.repository.PostRepository
+
+// ЗАКОММЕНТИРУЙТЕ ВЕСЬ КОД С DAGGER/HILT
+/*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +18,7 @@ object AppModule {
     @Provides
     @Singleton
     fun providePostRepository(): PostRepository {
-        return PostRepositoryImpl  // ← УБРАЛ СКОБКИ ()!
+        return PostRepositoryImpl()
     }
 }
+*/

@@ -10,9 +10,10 @@ enum class ProblemCategory(val displayName: String) {
     RELATIONSHIPS("Отношения"),
     WORK_STRESS("Работа/Стресс"),
     SLEEP("Сон"),
-    GENERAL("Общие проблемы")
+    GENERAL("Общие"),
+    FEAR("Страх"),
+    OTHER("Другие проблемы")
 }
-
 // Язык поста
 enum class Language(val code: String) {
     RUSSIAN("ru"),
@@ -30,14 +31,26 @@ enum class Language(val code: String) {
     }
 }
 
+// Добавь в начало файла (после enum Language)
+enum class TriggerWarning(val displayName: String, val emoji: String) {
+    SELF_HARM("Самоповреждение", "⚠️"),
+    VIOLENCE("Насилие", "🔞"),
+    ABUSE("Абьюз", "🚫"),
+    EATING_DISORDER("РПП", "🍽️"),
+    SUBSTANCE_ABUSE("Зависимости", "💊"),
+    SUICIDE("Суицид", "🆘"),
+    TRAUMA("Травма", "💔")
+}
+
 // Основная сущность - пост
 data class Post(
     val id: String = UUID.randomUUID().toString(),
     val content: String,
     val language: Language = Language.ENGLISH,
     val category: ProblemCategory = ProblemCategory.GENERAL,
+    val triggerWarnings: Set<TriggerWarning> = emptySet(), // ДОБАВЬ ЭТУ СТРОЧКУ
     val createdAt: Instant = Instant.now(),
-    val authorId: String? = null // анонимный ID автора
+    val authorId: String? = null
 ) {
     init {
         require(content.isNotBlank()) { "Пост не может быть пустым" }
