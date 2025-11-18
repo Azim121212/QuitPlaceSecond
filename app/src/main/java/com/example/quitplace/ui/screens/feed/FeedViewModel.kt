@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.quitplace.data.repository.PostRepositoryImpl
 import com.example.quitplace.domain.model.ProblemCategory
 import com.example.quitplace.domain.model.Post
+import com.example.quitplace.domain.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,7 +32,7 @@ data class PostUiModel(
 )
 
 class FeedViewModel : ViewModel() {
-    private val postRepository = PostRepositoryImpl
+    private val postRepository: PostRepository = PostRepositoryImpl
     private val _uiState = MutableStateFlow(FeedState())
     val uiState: StateFlow<FeedState> = _uiState.asStateFlow()
 

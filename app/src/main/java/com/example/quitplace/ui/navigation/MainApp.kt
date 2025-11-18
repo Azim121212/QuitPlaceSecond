@@ -28,6 +28,7 @@ import com.example.quitplace.ui.screens.profile.screens.edit.EditProfileScreen
 import com.example.quitplace.ui.screens.profile.screens.settings.SettingsScreen
 import com.example.quitplace.data.repository.PostRepositoryImpl
 import com.example.quitplace.data.repository.CommentRepositoryImpl
+import com.example.quitplace.domain.repository.PostRepository
 
 // Состояния навигации
 sealed class AppScreen {
@@ -126,7 +127,7 @@ fun MainApp() {
                 onBackClick = { currentScreen = AppScreen.Main },
                 viewModel = remember {
                     PostDetailsViewModel(
-                        postRepository = PostRepositoryImpl,
+                        postRepository = PostRepositoryImpl as PostRepository,
                         commentRepository = CommentRepositoryImpl()
                     )
                 }

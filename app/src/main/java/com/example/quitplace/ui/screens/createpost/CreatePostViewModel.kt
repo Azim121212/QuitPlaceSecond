@@ -6,6 +6,7 @@ import com.example.quitplace.data.repository.PostRepositoryImpl
 import com.example.quitplace.domain.model.ProblemCategory
 import com.example.quitplace.domain.model.Post
 import com.example.quitplace.domain.model.Language
+import com.example.quitplace.domain.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,7 @@ import java.time.Instant
 import java.util.UUID
 
 class CreatePostViewModel : ViewModel() {
-    private val postRepository = PostRepositoryImpl
+    private val postRepository: PostRepository = PostRepositoryImpl
     private val _uiState = MutableStateFlow(CreatePostState())
     val uiState: StateFlow<CreatePostState> = _uiState.asStateFlow()
 
