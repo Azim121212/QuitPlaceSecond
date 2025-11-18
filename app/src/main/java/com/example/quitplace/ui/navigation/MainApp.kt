@@ -126,7 +126,7 @@ fun MainApp() {
                 onBackClick = { currentScreen = AppScreen.Main },
                 viewModel = remember {
                     PostDetailsViewModel(
-                        postRepository = PostRepositoryImpl.getInstance(),
+                        postRepository = PostRepositoryImpl,
                         commentRepository = CommentRepositoryImpl()
                     )
                 }

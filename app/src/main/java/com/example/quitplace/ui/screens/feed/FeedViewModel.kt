@@ -31,7 +31,7 @@ data class PostUiModel(
 )
 
 class FeedViewModel : ViewModel() {
-    private val postRepository = PostRepositoryImpl.getInstance()
+    private val postRepository = PostRepositoryImpl
     private val _uiState = MutableStateFlow(FeedState())
     val uiState: StateFlow<FeedState> = _uiState.asStateFlow()
 

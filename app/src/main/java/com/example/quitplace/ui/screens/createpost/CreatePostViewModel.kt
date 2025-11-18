@@ -15,7 +15,7 @@ import java.time.Instant
 import java.util.UUID
 
 class CreatePostViewModel : ViewModel() {
-    private val postRepository = PostRepositoryImpl.getInstance()
+    private val postRepository = PostRepositoryImpl
     private val _uiState = MutableStateFlow(CreatePostState())
     val uiState: StateFlow<CreatePostState> = _uiState.asStateFlow()
 
@@ -63,6 +63,7 @@ class CreatePostViewModel : ViewModel() {
                     } else {
                         emptySet()
                     },
+                    createdAt = System.currentTimeMillis(),
                     authorId = "current_user"
                 )
 

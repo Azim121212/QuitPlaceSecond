@@ -6,24 +6,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class PostRepositoryImpl private constructor() : PostRepository {
+// In-memory реализация PostRepository
+object PostRepositoryImpl : PostRepository {
+    // Храним посты в памяти
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
-    
-    companion object {
-        @Volatile
-        private var INSTANCE: PostRepositoryImpl? = null
-        
-        fun getInstance(): PostRepositoryImpl {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: PostRepositoryImpl().also { INSTANCE = it }
-            }
-        }
-    }
+    private val posts: Flow<List<Post>> = _posts.asStateFlow()
 
     override suspend fun createPost(post: Post) {
-        val current = _posts.value.toMutableList()
-        current.add(0, post)
-        _posts.value = current
+        // Просто добавляем пост в начало списка
+        val currentPosts = _posts.value.toMutableList()
+        currentPosts.add(0, post) // Новые посты в начале
+        _posts.value = currentPosts
     }
 
     override suspend fun getPostById(id: String): Post {
@@ -31,6 +24,6 @@ class PostRepositoryImpl private constructor() : PostRepository {
     }
 
     override fun getPosts(): Flow<List<Post>> {
-        return _posts.asStateFlow()
+        return posts
     }
 }
