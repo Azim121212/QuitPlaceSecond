@@ -16,6 +16,7 @@ import com.example.quitplace.ui.screens.createpost.CreatePostScreen
 import com.example.quitplace.ui.screens.feed.FeedScreen
 import com.example.quitplace.ui.screens.ProfileScreen
 import com.example.quitplace.ui.screens.postdetails.PostDetailsScreen
+import com.example.quitplace.ui.screens.postdetails.PostDetailsViewModel
 import com.example.quitplace.ui.screens.profile.screens.posts.MyPostsScreen
 import com.example.quitplace.ui.screens.profile.screens.comments.MyCommentsScreen
 import com.example.quitplace.ui.screens.profile.screens.favorites.FavoritesScreen
@@ -25,6 +26,8 @@ import com.example.quitplace.ui.screens.profile.screens.emergency.EmergencyScree
 import com.example.quitplace.ui.screens.profile.screens.help.HelpScreen
 import com.example.quitplace.ui.screens.profile.screens.edit.EditProfileScreen
 import com.example.quitplace.ui.screens.profile.screens.settings.SettingsScreen
+import com.example.quitplace.data.repository.PostRepositoryImpl
+import com.example.quitplace.data.repository.CommentRepositoryImpl
 
 // Состояния навигации
 sealed class AppScreen {
@@ -121,7 +124,12 @@ fun MainApp() {
             PostDetailsScreen(
                 postId = (currentScreen as AppScreen.PostDetails).postId,
                 onBackClick = { currentScreen = AppScreen.Main },
-                viewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+                viewModel = remember {
+                    PostDetailsViewModel(
+                        postRepository = PostRepositoryImpl(),
+                        commentRepository = CommentRepositoryImpl()
+                    )
+                }
             )
         }
 

@@ -1,8 +1,6 @@
 package com.example.quitplace.ui.screens.postdetails
 
-
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
@@ -268,7 +266,7 @@ fun PostDetailsScreen(
                     LazyColumn(
                         state = listState,
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp)
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp)  // 16dp standard
                     ) {
                         item {
                             PostContent(
@@ -280,7 +278,7 @@ fun PostDetailsScreen(
                         item {
                             CommentsHeader(
                                 commentCount = uiState.comments.size,
-                                modifier = Modifier.padding(vertical = 16.dp)
+                                modifier = Modifier.padding(vertical = 24.dp)  // 24dp sections
                             )
                         }
 
@@ -297,7 +295,7 @@ fun PostDetailsScreen(
                             ) { comment ->
                                 CommentItem(
                                     comment = comment,
-                                    modifier = Modifier.padding(vertical = 8.dp)
+                                    modifier = Modifier.padding(vertical = 8.dp)  // 8dp minor spacing
                                 )
                             }
                         }
@@ -334,23 +332,29 @@ fun PostContent(
 ) {
     Card(
         modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        shape = RoundedCornerShape(16.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),  // Мягкая тень 2dp
+        shape = RoundedCornerShape(20.dp),  // 20dp скругление (16-24dp range)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp)
+                .padding(24.dp)  // 24dp sections spacing
         ) {
-            // Category badge
+            // Category Badge - лавандовый акцент
             Badge(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.padding(bottom = 8.dp)
             ) {
-                Text(post.category.displayName)
+                Text(
+                    text = post.category.displayName,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Normal
+                )
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))  // 16dp standard spacing
 
             // Trigger warning
             if (post.isTriggerWarning) {
@@ -381,23 +385,23 @@ fun PostContent(
                 Spacer(Modifier.height(16.dp))
             }
 
-            // Post text
+            // Post Text - полный текст с теплым off-white
             Text(
                 text = post.content,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.bodyLarge,  // bodyLarge для основного текста (24sp line height уже в типографике)
+                color = MaterialTheme.colorScheme.onSurface  // Теплый off-white
             )
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))  // 16dp standard
 
-            // Timestamp
+            // Timestamp - вторичный текст
             Text(
                 text = formatTimestamp(post.createdAt),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant  // WarmOffWhiteVariant
             )
 
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(24.dp))  // 24dp sections
 
             // Comment button
             Button(
@@ -451,13 +455,14 @@ fun CommentItem(
 ) {
     Card(
         modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(12.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),  // Мягкая тень
+        shape = RoundedCornerShape(16.dp),  // 16dp скругление
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp)  // 16dp standard
         ) {
             // Avatar
             Box(

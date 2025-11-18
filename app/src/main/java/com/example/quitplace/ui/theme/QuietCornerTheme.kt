@@ -15,42 +15,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-// Переименуем наши цветовые схемы чтобы избежать конфликта
-private val QuietCornerDarkColorScheme = darkColorScheme(
-    primary = Color(0xFF4ECDC4),        // Акцентный бирюзовый
-    onPrimary = Color(0xFF000000),
-    primaryContainer = Color(0xFF3BAFA8),
-
-    secondary = Color(0xFFA0AEC0),      // Второстепенный текст
-    onSecondary = Color(0xFF000000),
-
-    background = Color(0xFF1E2A3A),     // Основной фон
-    onBackground = Color(0xFFE2E8F0),   // Основной текст
-
-    surface = Color(0xFF2D3748),        // Поверхностные блоки
-    onSurface = Color(0xFFE2E8F0),
-
-    error = Color(0xFFE53E3E),          // Ошибки/тревожные элементы
-    onError = Color(0xFFFFFFFF)
-)
-
-private val QuietCornerLightColorScheme = lightColorScheme(
-    primary = Color(0xFF4ECDC4),
-    onPrimary = Color(0xFF000000),
-    primaryContainer = Color(0xFF3BAFA8),
-
-    secondary = Color(0xFFA0AEC0),
-    onSecondary = Color(0xFF000000),
-
-    background = Color(0xFF1E2A3A),
-    onBackground = Color(0xFFE2E8F0),
-
-    surface = Color(0xFF2D3748),
-    onSurface = Color(0xFFE2E8F0),
-
-    error = Color(0xFFE53E3E),
-    onError = Color(0xFFFFFFFF)
-)
+// Используем обновленную цветовую схему из Theme.kt
+// Dark theme first - основной режим приложения
 
 @Composable
 fun QuietCornerTheme(
@@ -58,13 +24,14 @@ fun QuietCornerTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    // Quiet Corner использует темную тему по умолчанию
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> QuietCornerDarkColorScheme
-        else -> QuietCornerLightColorScheme
+        darkTheme -> DarkColorScheme  // Используем обновленную схему из Theme.kt
+        else -> DarkColorScheme       // Даже в светлой теме используем темную (dark theme first)
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

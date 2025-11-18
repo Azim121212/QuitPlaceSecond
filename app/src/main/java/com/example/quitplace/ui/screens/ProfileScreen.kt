@@ -80,8 +80,8 @@ fun ProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+            .padding(16.dp),  // 16dp standard spacing
+        verticalArrangement = Arrangement.spacedBy(24.dp)  // 24dp sections
     ) {
         // Header Section
         ProfileHeader(
@@ -225,45 +225,47 @@ fun ProfileHeader(
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),  // Мягкая тень
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp)  // 20dp скругление
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(24.dp),  // 24dp sections
+            verticalArrangement = Arrangement.spacedBy(16.dp)  // 16dp standard
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Avatar
+                // Anonymous Avatar - лавандовый акцент
                 Box(
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primaryContainer),
+                        .background(MaterialTheme.colorScheme.primaryContainer),  // Лавандовый контейнер
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Person,
-                        contentDescription = "Аватар",
+                        contentDescription = "Анонимный аватар",
                         modifier = Modifier.size(32.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MaterialTheme.colorScheme.primary  // Лавандовый акцент
                     )
                 }
 
-                // User Info
+                // User Info - спокойная типографика
                 Column {
                     Text(
                         text = username,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        style = MaterialTheme.typography.titleLarge,  // titleLarge для имени
+                        fontWeight = FontWeight.Normal,  // Спокойный, не жирный
+                        color = MaterialTheme.colorScheme.onSurface  // Теплый off-white
                     )
                     Text(
                         text = supportLevel,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant  // Вторичный текст
                     )
                 }
             }
@@ -301,29 +303,30 @@ fun ProfileStat(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),  // Мягкая тень
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)  // 16dp скругление
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(16.dp),  // 16dp standard
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)  // 8dp minor
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.primary  // Лавандовый акцент
             )
             Text(
                 text = count.toString(),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                fontWeight = FontWeight.Normal,  // Спокойный, не жирный
+                color = MaterialTheme.colorScheme.onSurface  // Теплый off-white
             )
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant  // Вторичный текст
             )
         }
     }
@@ -339,16 +342,21 @@ fun ProfileActionItem(
 ) {
     Card(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),  // 8dp minor spacing между элементами
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),  // Мягкая тень
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)  // 16dp скругление
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .padding(16.dp)  // 16dp standard
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp)  // 16dp standard
         ) {
             Icon(
                 imageVector = icon,

@@ -76,27 +76,28 @@ fun FeedScreen(
             ) {
                 FloatingActionButton(
                     onClick = { onNavigate(AppScreen.CreatePost) },
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme.colorScheme.primary,  // Лавандовый акцент
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(56.dp)  // Большой touch target для accessibility
                 ) {
-                    Icon(Icons.Filled.Add, "Создать пост")
+                    Icon(Icons.Filled.Add, "Создать пост", modifier = Modifier.size(24.dp))
                 }
             }
         }
     ) { paddingValues ->
         Column(modifier = Modifier.fillMaxSize()) {
-            // Минималистичный хедер
+            // Top App Bar - Quiet Corner Logo + Actions
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                    .padding(horizontal = 16.dp, vertical = 16.dp),  // 16dp standard spacing
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Луна слева
+                // Logo/Icon слева
                 Text(
                     text = "🌙",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineLarge,  // Спокойный заголовок
                     modifier = Modifier.padding(start = 8.dp)
                 )
 
@@ -225,16 +226,18 @@ fun FilterPanel(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),  // 4dp elevation
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp)  // 20dp скругление
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier.padding(24.dp),  // 24dp sections
+            verticalArrangement = Arrangement.spacedBy(16.dp)  // 16dp standard
         ) {
             Text(
                 text = "Фильтр по категориям",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.Normal,  // Спокойный заголовок
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             // Первая строка фильтров
@@ -327,8 +330,8 @@ fun PostsList(
 ) {
     LazyColumn(
         state = listState,
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(16.dp),  // 16dp standard padding
+        verticalArrangement = Arrangement.spacedBy(16.dp),  // 16dp standard spacing между постами
         modifier = modifier
     ) {
         items(posts, key = { it.id }) { post ->
@@ -352,49 +355,54 @@ fun PostCard(
             .fillMaxWidth()
             .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = MaterialTheme.shapes.extraLarge
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),  // Мягкая тень 2dp
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp)  // 20dp скругление (16-24dp range)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier.padding(24.dp),  // 24dp sections spacing
+            verticalArrangement = Arrangement.spacedBy(16.dp)  // 16dp standard spacing
         ) {
-            // Бейдж категории
+            // Category Badge - лавандовый акцент
             Badge(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.padding(bottom = 4.dp)
             ) {
                 Text(
-                    text = "🎯 ${post.category.displayName}",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Medium
+                    text = "${post.category.displayName}",
+                    style = MaterialTheme.typography.labelMedium,  // Medium для лучшей читаемости
+                    fontWeight = FontWeight.Normal  // Спокойный, не жирный
                 )
             }
 
-            // Текст поста
+            // Post Text - 6-line preview с теплым off-white текстом
             Text(
                 text = post.content,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 6,
+                style = MaterialTheme.typography.bodyLarge,  // bodyLarge для основного текста
+                color = MaterialTheme.colorScheme.onSurface,  // Теплый off-white
+                maxLines = 6,  // 6-line preview как в спецификации
                 overflow = TextOverflow.Ellipsis
             )
 
-            // Триггер-предупреждение
+            // Trigger Warning Badge - мягкий красный
             if (post.hasTriggerWarning) {
                 Badge(
                     containerColor = MaterialTheme.colorScheme.errorContainer,
-                    contentColor = MaterialTheme.colorScheme.onErrorContainer
+                    contentColor = MaterialTheme.colorScheme.onError,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 ) {
-                    Text("⚠️ Триггер-предупреждение")
+                    Text(
+                        text = "⚠️ Триггер-предупреждение",
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
             }
 
-            // Время публикации
+            // Timestamp - вторичный текст
             Text(
                 text = post.timestamp,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant  // WarmOffWhiteVariant
             )
         }
     }
