@@ -15,7 +15,7 @@ import java.time.Instant
 import java.util.UUID
 
 class CreatePostViewModel : ViewModel() {
-    private val postRepository = PostRepositoryImpl()
+    private val postRepository = PostRepositoryImpl.getInstance()
     private val _uiState = MutableStateFlow(CreatePostState())
     val uiState: StateFlow<CreatePostState> = _uiState.asStateFlow()
 
@@ -58,7 +58,11 @@ class CreatePostViewModel : ViewModel() {
                     content = _uiState.value.text,
                     language = Language.detectFromText(_uiState.value.text),
                     category = _uiState.value.category!!,
-                    triggerWarnings = emptySet(),
+                    triggerWarnings = if (_uiState.value.isTriggerWarning) {
+                        setOf(com.example.quitplace.domain.model.TriggerWarning.TRAUMA)  // Используем TRAUMA как общий триггер
+                    } else {
+                        emptySet()
+                    },
                     authorId = "current_user"
                 )
 

@@ -6,8 +6,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class PostRepositoryImpl : PostRepository {
+class PostRepositoryImpl private constructor() : PostRepository {
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
+    
+    companion object {
+        @Volatile
+        private var INSTANCE: PostRepositoryImpl? = null
+        
+        fun getInstance(): PostRepositoryImpl {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: PostRepositoryImpl().also { INSTANCE = it }
+            }
+        }
+    }
 
     override suspend fun createPost(post: Post) {
         val current = _posts.value.toMutableList()
