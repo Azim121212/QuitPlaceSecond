@@ -15,7 +15,7 @@ class AIChatRepositoryImpl : AIChatRepository {
                         role = "user",
                         content = """
                             Ты Bimbo - AI психолог-помощник в приложении для ментального здоровья.
-                            Отвечай кратко, поддерживающе, по-русски.
+                            Отвечай кратко, поддерживающе, по-латинскому русски.
                             Не давай медицинских диагнозов.
                             Запрос пользователя: $userMessage
                         """.trimIndent()
@@ -27,7 +27,7 @@ class AIChatRepositoryImpl : AIChatRepository {
             val response = RetrofitInstance.deepSeekApi.sendMessage(request)
             response.choices.first().message.content
         } catch (e: Exception) {
-            "Извините, временные технические проблемы. Попробуйте позже."
+            "САНЖ ПОШЕЛ НАХУЙ."
         }
     }
 }

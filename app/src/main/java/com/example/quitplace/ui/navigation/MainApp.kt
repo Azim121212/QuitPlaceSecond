@@ -15,6 +15,7 @@ import com.example.quitplace.ui.screens.ChatScreen
 import com.example.quitplace.ui.screens.createpost.CreatePostScreen
 import com.example.quitplace.ui.screens.feed.FeedScreen
 import com.example.quitplace.ui.screens.ProfileScreen
+import com.example.quitplace.ui.screens.postdetails.PostDetailsScreen
 import com.example.quitplace.ui.screens.profile.screens.posts.MyPostsScreen
 import com.example.quitplace.ui.screens.profile.screens.comments.MyCommentsScreen
 import com.example.quitplace.ui.screens.profile.screens.favorites.FavoritesScreen
@@ -25,12 +26,12 @@ import com.example.quitplace.ui.screens.profile.screens.help.HelpScreen
 import com.example.quitplace.ui.screens.profile.screens.edit.EditProfileScreen
 import com.example.quitplace.ui.screens.profile.screens.settings.SettingsScreen
 
-
 // Состояния навигации
 sealed class AppScreen {
     object Main : AppScreen()
     object CreatePost : AppScreen()
     data class ChatDetail(val chatName: String) : AppScreen()
+    data class PostDetails(val postId: String) : AppScreen()
 
     // ПРОФИЛЬНЫЕ ЭКРАНЫ
     object MyPosts : AppScreen()
@@ -87,7 +88,9 @@ fun MainApp() {
                 }
             ) { paddingValues ->
                 when (currentBottomScreen) {
-                    is Screen.Feed -> FeedScreen()
+                    is Screen.Feed -> FeedScreen(
+                        onNavigate = { screen -> currentScreen = screen }
+                    )
                     is Screen.Chat -> ChatScreen(
                         onChatClick = { chatName ->
                             currentScreen = AppScreen.ChatDetail(chatName)
@@ -101,7 +104,7 @@ fun MainApp() {
         }
 
         is AppScreen.CreatePost -> {
-            com.example.quitplace.ui.screens.createpost.CreatePostScreen(
+            CreatePostScreen(
                 onBackClick = { currentScreen = AppScreen.Main },
                 onPostCreated = { currentScreen = AppScreen.Main }
             )
@@ -111,6 +114,14 @@ fun MainApp() {
             ChatDetailScreen(
                 chatName = (currentScreen as AppScreen.ChatDetail).chatName,
                 onBackClick = { currentScreen = AppScreen.Main }
+            )
+        }
+
+        is AppScreen.PostDetails -> {
+            PostDetailsScreen(
+                postId = (currentScreen as AppScreen.PostDetails).postId,
+                onBackClick = { currentScreen = AppScreen.Main },
+                viewModel = androidx.lifecycle.viewmodel.compose.viewModel()
             )
         }
 

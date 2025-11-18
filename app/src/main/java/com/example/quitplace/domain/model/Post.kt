@@ -1,6 +1,5 @@
 package com.example.quitplace.domain.model
 
-import java.time.Instant
 import java.util.UUID
 
 // Категории проблем
@@ -14,6 +13,7 @@ enum class ProblemCategory(val displayName: String) {
     FEAR("Страх"),
     OTHER("Другие проблемы")
 }
+
 // Язык поста
 enum class Language(val code: String) {
     RUSSIAN("ru"),
@@ -31,7 +31,7 @@ enum class Language(val code: String) {
     }
 }
 
-// Добавь в начало файла (после enum Language)
+// Триггер-предупреждения
 enum class TriggerWarning(val displayName: String, val emoji: String) {
     SELF_HARM("Самоповреждение", "⚠️"),
     VIOLENCE("Насилие", "🔞"),
@@ -48,10 +48,13 @@ data class Post(
     val content: String,
     val language: Language = Language.ENGLISH,
     val category: ProblemCategory = ProblemCategory.GENERAL,
-    val triggerWarnings: Set<TriggerWarning> = emptySet(), // ДОБАВЬ ЭТУ СТРОЧКУ
-    val createdAt: Instant = Instant.now(),
+    val triggerWarnings: Set<TriggerWarning> = emptySet(),
+    val createdAt: Long = System.currentTimeMillis(),
     val authorId: String? = null
 ) {
+    val isTriggerWarning: Boolean
+        get() = triggerWarnings.isNotEmpty()
+
     init {
         require(content.isNotBlank()) { "Пост не может быть пустым" }
         require(content.length <= 5000) { "Пост слишком длинный" }

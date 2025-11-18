@@ -7,13 +7,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class PostRepositoryImpl : PostRepository {
-
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
 
     override suspend fun createPost(post: Post) {
-        val currentPosts = _posts.value.toMutableList()
-        currentPosts.add(0, post)
-        _posts.value = currentPosts
+        val current = _posts.value.toMutableList()
+        current.add(0, post)
+        _posts.value = current
+    }
+
+    override suspend fun getPostById(id: String): Post {
+        return _posts.value.firstOrNull { it.id == id } ?: throw Exception("Post not found")
     }
 
     override fun getPosts(): Flow<List<Post>> {

@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.bimboo"
+    namespace = "com.example.quitplace"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.bimboo"
+        applicationId = "com.example.quitplace"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

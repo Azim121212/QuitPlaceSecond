@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,6 +28,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Badge
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -151,19 +154,56 @@ fun FeedScreen(
             }
 
             // Лента постов
-            if (uiState.filteredPosts.isEmpty()) {
-                EmptyFeedState(
-                    hasFilter = uiState.selectedCategory != null,
-                    onClearFilter = { viewModel.selectCategory(null) }
-                )
-            } else {
-                PostsList(
-                    posts = uiState.filteredPosts,
-                    listState = listState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                )
+            when {
+                uiState.isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.Center)
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+                uiState.error != null -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.Center)
+                            .padding(32.dp)
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Text(
+                                text = "Ошибка: ${uiState.error}",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                            androidx.compose.material3.Button(
+                                onClick = { viewModel.loadPosts() }
+                            ) {
+                                Text("Попробовать снова")
+                            }
+                        }
+                    }
+                }
+                uiState.filteredPosts.isEmpty() -> {
+                    EmptyFeedState(
+                        hasFilter = uiState.selectedCategory != null,
+                        onClearFilter = { viewModel.selectCategory(null) }
+                    )
+                }
+                else -> {
+                    PostsList(
+                        posts = uiState.filteredPosts,
+                        listState = listState,
+                        onPostClick = { postId -> onNavigate(AppScreen.PostDetails(postId)) },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                    )
+                }
             }
         }
     }
@@ -282,6 +322,7 @@ fun FilterBanner(category: ProblemCategory, onClear: () -> Unit) {
 fun PostsList(
     posts: List<PostUiModel>,
     listState: androidx.compose.foundation.lazy.LazyListState,
+    onPostClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -293,6 +334,7 @@ fun PostsList(
         items(posts, key = { it.id }) { post ->
             PostCard(
                 post = post,
+                onClick = { onPostClick(post.id) },
                 modifier = Modifier
             )
         }
@@ -300,9 +342,15 @@ fun PostsList(
 }
 
 @Composable
-fun PostCard(post: PostUiModel, modifier: Modifier = Modifier) {
+fun PostCard(
+    post: PostUiModel,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = MaterialTheme.shapes.extraLarge
